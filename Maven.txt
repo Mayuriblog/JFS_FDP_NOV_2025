@@ -1,0 +1,109 @@
+															Maven
+															=====
+Maven is a powerful project management tool that is based on POM (project object model). It is used for projects build, dependency and documentation.
+
+It simplifies the build process like ANT. But it is too much advanced than ANT.
+
+Hence, supporting developers across many phases of the whole Software Development Life Cycle
+(SDLC).
+
+This philosophy is part of Maven in its core: i.e., the word maven means accumulator of
+knowledge (in Yiddish).
+
+How to build Hello program using .bat file
+-----------------------------------------------
+// Hello.java
+class Hello {
+	public static void main(String rags[]) {
+		System.out.println("Hello ");
+	}
+}
+
+To compile and run java program create one build.cmd file
+REM build.cmd
+REM batch file to compile and run java programs
+del Hello.class
+javac Hello.java
+java Hello
+
+open command prompt and run build
+
+How to build Hello program using ANT
+-------------------------------------------
+Download ANT ZIP file, copy it into D:\Softwares directory
+https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.15-bin.zip
+
+Extract the zip file
+
+Update following directory in PATH
+D:\Softwares\apache-ant-1.10.15-bin\apache-ant-1.10.15\bin
+
+Create one user defined ENV variable
+ANT_HOME
+D:\Softwares\apache-ant-1.10.15-bin\apache-ant-1.10.15
+
+Write one build.xm file
+<?xml version="1.0"?>
+<!-- build.xml -->
+<project default="all">
+	<target  name="compile">
+		<javac srcdir="." destdir="."/>
+	</target>
+	<target  name="run" depends="compile">
+		<java classname="Hello" fork="true"/>
+	</target>
+	<target name="all" depends="run"/>
+</project>
+
+open command prompt and type 
+ant
+
+
+How to build Hello program using Maven
+----------------------------------------------
+Download Maven 
+https://dlcdn.apache.org/maven/maven-3/3.9.11/binaries/apache-maven-3.9.11-bin.zip
+
+Copy it into D:\Softwares directory, extract it there.
+
+Create JAVA_HOME
+C:\Program Files\Java\jdk-17
+
+Update in PATH:
+D:\Softwares\apache-maven-3.9.6-bin\apache-maven-3.9.6\bin
+
+Create MAVEN_HOME
+D:\Softwares\apache-maven-3.9.6-bin\apache-maven-3.9.6
+
+Test maven version
+mvn -version
+
+Creating first Maven Project
+mvn archetype:generate -DgroupId=in.ac.iare -DartifactId=Hello  
+-DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false  
+
+Explain generated directory structure
+
+Explain pom.xml file
+
+Automatically generated App.java, update it.
+
+Compile Maven Project
+mvn clean compile
+
+To run the Maven Project:
+java in.ac.iare.App
+Output: Hello
+
+To create JAR file
+mvn package
+
+To run JAR
+java -classpath target\...jar in.ac.iare.App
+Output: Hello
+
+
+
+
+
+
