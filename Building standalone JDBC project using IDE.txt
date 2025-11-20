@@ -1,0 +1,86 @@
+Building standalone JDBC project using Maven, running in Eclipse IDE:
+-----------------------------------------------------
+Requirements:
+(download latest version and need to set environment variables)
+
+1. JDK 17
+
+https://download.oracle.com/java/17/archive/jdk-17.0.12_windows-x64_bin.exe
+
+2. Eclipse Enterprise Edition needed to download and install
+
+https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2022-06/R/eclipse-jee-2022-06-R-win32-x86_64.zip
+
+3. MySQL download
+
+https://dev.mysql.com/get/Downloads/MySQLInstaller/mysql-installer-community-8.0.43.0.msi
+
+----------------------------------------------
+Employee Database 
+--------------------------------
+step 1: 
+create database and table in MySQL workbench
+
+create database college_db;
+use college_db;
+
+CREATE TABLE employee (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100),
+  email VARCHAR(100),
+  salary DOUBLE
+);
+
+step 2:
+Open Eclipse IDE
+
+open-->file-->new-->Maven Project
+
+create the simple project (check )
+
+Configure Project: 
+a. groupId : com.college
+b. artifactId:EmployeeCrud
+c. version: 0.0.1 - SNAPSHOT (default)
+d: Packaging: jar (default)
+e: Name: EmployeeCrud
+
+click on finish
+
+step 3:
+
+Click on EmployeeCrud --> src/main/java --> (right click) -->new --> class
+ Package Name : com.college
+ Name: Employee
+click on finish
+
+ Step 4:
+
+ Create Employee.java (bean file) 
+  whatever the columns specified in the employee table those attributes must be specified in the employee.java
+
+Step 5:
+
+Create a EmployeeDAO file in same Package (operations code)
+
+Step 6:
+
+Create a EmployeeApp file in same Package (main method)
+
+step 7:
+
+update pom.xml with MySQL connector dependency
+
+step 8: 
+Run as Java Application
+
+
+
+
+
+
+
+
+
+
+
