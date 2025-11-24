@@ -1,0 +1,179 @@
+read a and b from an HTML file, send them using POST, and perform arithmetic operations using Spring Boot Microservices created using STS 4.0.
+
+The setup contains two Spring Boot applications:
+
+✅ MICROSERVICE ARCHITECTURE
+1. arithmetic-service
+
+Performs actual arithmetic (add, sub, mul, div).
+
+2. arithmetic-client
+
+Provides HTML input page → sends data via POST → calls microservice → displays result.
+
+====================================================
+⭐ STEP 1 — Create Microservice Project: arithmetic-service
+====================================================
+📌 STS → File → New → Spring Starter Project
+
+Project Name: arithmetic-service
+
+Dependencies:
+✔ Spring Web
+
+📌 application.properties
+
+(Optional — default port will be 8080)
+
+server.port=8080
+
+ArithmeticController.java
+
+Create:
+
+src/main/java/com/ms/controllers/ArithmeticController.java
+
+package com.ms.controllers;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
+public class ArithmeticController {
+
+    @PostMapping("/add")
+    public int add(@RequestParam int a, @RequestParam int b) {
+        return a + b;
+    }
+
+    @PostMapping("/sub")
+    public int subtract(@RequestParam int a, @RequestParam int b) {
+        return a - b;
+    }
+
+    @PostMapping("/mul")
+    public int multiply(@RequestParam int a, @RequestParam int b) {
+        return a * b;
+    }
+
+    @PostMapping("/div")
+    public int divide(@RequestParam int a, @RequestParam int b) {
+        return a / b;
+    }
+}
+
+====================================================
+⭐ STEP 2 — Create Client Project: arithmetic-client
+====================================================
+📌 STS → File → New → Spring Starter Project
+
+Project Name: arithmetic-client
+
+Dependencies:
+✔ Spring Web
+✔ Thymeleaf
+
+📌 application.properties (run on 8081)
+server.port=8081
+
+====================================================
+⭐ STEP 3 — Create HTML page to read a and b
+====================================================
+
+Create file:
+
+src/main/resources/templates/input.html
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <h2>Arithmetic Operations Using Microservice</h2>
+
+    <form action="/calculate" method="post">
+
+        Enter Number A:
+        <input type="number" name="a" required><br><br>
+
+        Enter Number B:
+        <input type="number" name="b" required><br><br>
+
+        Select Operation:
+        <select name="operation">
+            <option value="add">Addition</option>
+            <option value="sub">Subtraction</option>
+            <option value="mul">Multiplication</option>
+            <option value="div">Division</option>
+        </select>
+        <br><br>
+
+        <button type="submit">Calculate</button>
+    </form>
+
+    <h3>Result: <span th:text="${result}"></span></h3>
+
+</body>
+</html>
+
+====================================================
+⭐ STEP 4 — Create Controller to call Microservice
+====================================================
+
+Create:
+
+src/main/java/com/client/controllers/ClientController.java
+
+package com.client.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+@Controller
+public class ClientController {
+
+    @GetMapping("/")
+    public String home() {
+        return "input";
+    }
+
+    @PostMapping("/calculate")
+    public String calculate(
+            @RequestParam int a,
+            @RequestParam int b,
+            @RequestParam String operation,
+            Model model) {
+
+        String url = "http://localhost:8080/api/" + operation + "?a=" + a + "&b=" + b;
+
+        RestTemplate restTemplate = new RestTemplate();
+        int result = restTemplate.postForObject(url, null, Integer.class);
+
+        model.addAttribute("result", result);
+
+        return "input";
+    }
+}
+
+====================================================
+⭐ HOW TO RUN
+====================================================
+✔ Step 1 — Run arithmetic-service
+
+Right-click project → Run As → Spring Boot App
+
+It runs on:
+
+http://localhost:8080
+
+✔ Step 2 — Run arithmetic-client
+
+Right-click → Run As → Spring Boot App
+
+Open browser:
+
+http://localhost:8081/
+
+✔ Step 3 — Enter a, b and choose operation
+
+Client POSTs → Microservice calculates → Result displayed.
